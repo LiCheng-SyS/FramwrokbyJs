@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/babel.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="js/react.js"></script>
+<script src="js/react-dom.js"></script>
+<script type="text/babel">
+    let header = <header id="header">
+        <h1 id="title">hello react</h1>
+        <p>React first demo</p>
+        <nav>
+            <a href="">链接1</a>
+            <a href="">链接2</a>
+        </nav>
+    </header>;
+    ReactDOM.render(
+        header,
+        document.querySelector("#root")
+    )
+</script>
+</body>
+</html>
