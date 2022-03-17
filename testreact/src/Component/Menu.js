@@ -31,7 +31,7 @@ class Menu extends Component {
       2:this绑定
     */
     render() {
-        console.log(this.props);
+
         const {title, list} = this.props;
         const {show} = this.state;
         return (
