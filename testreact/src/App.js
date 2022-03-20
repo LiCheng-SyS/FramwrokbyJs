@@ -8,12 +8,25 @@ props 当父组件条用子组件时，可以将传递的数据添加在子组�
 */
 
 class App extends Component {
-    //state 异步 || 同步
+    /*子级向父级传递*/
+    state = {
+        box_state: ""//记录当前哪一项展开
+    }
+
+    changeOpen = (box_state) => {
+        this.setState({
+            box_state
+        })
+    }
+
+
     render() {
+        const {box_state} = this.state;
         return (
             <ul id="menu">
                 {Object.keys(data).map((item, index) => {
-                    return <Menu key={index} title={item} list={data[item]}/>  //-<属性
+                    return <Menu key={index} changeOpen={this.changeOpen} box_state={box_state} title={item}
+                                 list={data[item]}/>  //-<属性
                 })}
             </ul>
         )

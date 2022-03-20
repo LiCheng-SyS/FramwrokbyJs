@@ -5,38 +5,18 @@ class Menu extends Component {
         show: false
     }
 
-    constructor(props) {
-        super(props);
-        this.clickHandler = this.clickHandler.bind(this);
+    //如果是function 会丢失构造函数,当前解决方案 没有解决已经展开的问题
+    changeShow = () => {
+        const {changeOpen, title, box_state} = this.props;
+        changeOpen(title === box_state ? "" : title);
     }
 
-    //指向的是构造函数的实例 从而bind 方法
-    // clickHandler = function () {
-    //     console.log(this);
-    // }
-
-    //事件源
-    //组织默认元素的默认行 如:a标签的:herf:
-    clickHandler = (e) => {
-        console.log(this, e.target);
-        e.preventDefault();//事件
-        e.stopPropagation();//阻止冒泡
-    }
-
-    /*
-    React 事件
-     1:事件的this 指向 的是undefined-->
-      处理函数的问题
-      1:=>函数
-      2:this绑定
-    */
+    /*子级修改父级的状态*/
     render() {
-
-        const {title, list} = this.props;
-        const {show} = this.state;
+        const {title, list, box_state} = this.props;
         return (
-            <li className={show ? "subList-show" : ""}>
-                <a onClick={this.clickHandler}>{title}</a>
+            <li className={box_state === title ? "subList-show" : ""}>
+                <a onClick={this.changeShow}>{title}</a>
                 <ul className="subList">
                     {
                         list.map((item, index) => <li key={index}>{item}</li>)
