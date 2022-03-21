@@ -46,7 +46,7 @@ ReactDOM.render(
 
 *函数调用*
 
-​ 基本语法Example
+ 基本语法Example
 
 ```react
 let render = (nub)=>{
@@ -73,7 +73,7 @@ let div = <div>
 
 ### 列表输出
 
-​ React 没有像Vue 有v-for 语法 需要自行去映射数组
+React 没有像Vue 有v-for 语法 需要自行去映射数组
 
 *在列表输出时，要每一项需要有一个列表中唯一的key值*  *参照Vue*
 
@@ -126,11 +126,11 @@ ReactDOM.render(
 
 ### Fragment 容器
 
-​ 可以用于包住整个同一层级的元素，且并不会在渲染时多出一个元素。
+可以用于包住整个同一层级的元素，且并不会在渲染时多出一个元素。
 
-​ 1. JSX 最终会变成虚拟DOM（一个对象）,一定要注意，JSX 在输出时，必须有且只有一个顶层容器元素。
+1. JSX 最终会变成虚拟DOM（一个对象）,一定要注意，JSX 在输出时，必须有且只有一个顶层容器元素。
 
-​ Fragment: <Fragment></Fragment> 或 <></>*
+Fragment: <Fragment></Fragment> 或 <></>*
 
 ```jsx
 let div = <>
@@ -151,7 +151,7 @@ let div = <>
 
 ### 组件的定义和使用
 
-​ 组件:对于有一定**独立**的功能的数据与方法封装,对外暴露接口，有利于代码复用，且不用担心冲突
+组件:对于有一定**独立**的功能的数据与方法封装,对外暴露接口，有利于代码复用，且不用担心冲突
 
 #### 声明组件
 
@@ -171,9 +171,9 @@ class App extends Component {
 
 #### state 状态
 
-​ 1.**React 的组件类比于状态机 ，当前组件状态发生变化，关联视图，也会发生变化**   如果是交互式就必须是组件
+1.**React 的组件类比于状态机 ，当前组件状态发生变化，关联视图，也会发生变化**   如果是交互式就必须是组件
 
-​ 2.React 中,state 是一种不可变的值,唯一修改state的办法就是调用setState,根据原来的状态映射新的状态
+2.React 中,state 是一种不可变的值,唯一修改state的办法就是调用setState,根据原来的状态映射新的状态
 
 ```react
    setState(state, callback) {
@@ -244,7 +244,7 @@ Example 复杂对象 行内事件
 
 ##### setState (func)
 
-​ 如果 func 调用 setState 如果参数是一个function ，则执行该function 然后，拿到function的返回值,并把返回值更新到状态。
+如果 func 调用 setState 如果参数是一个function ，则执行该function 然后，拿到function的返回值,并把返回值更新到状态。
 
 ```react
         <p>nub:{nub}</p>
@@ -260,7 +260,7 @@ Example 复杂对象 行内事件
 
 ##### setState (satae|callback)
 
-​ 当前次组件更新完成后回调函数，当我们调用setState 后组件会更新 ，重新调用render,然后更dom，更新完成后执行的---callback.
+当前次组件更新完成后回调函数，当我们调用setState 后组件会更新 ，重新调用render,然后更dom，更新完成后执行的---callback.
 
 ```
             <p>nub:{nub}</p>
@@ -276,9 +276,9 @@ Example 复杂对象 行内事件
 
 #### setState
 
-​ setState 是Async || synchro
+setState 是Async || synchro
 
-​ 同步：**{**    在React可以监控的地方 :React 事件,React 组件生命周期函数,以及其他的React 方法中,呈现异步表现，并且回对setState 进行合并更新 -只更新一次
+同步：**{**    在React可以监控的地方 :React 事件,React 组件生命周期函数,以及其他的React 方法中,呈现异步表现，并且回对setState 进行合并更新 -只更新一次
 
 在异步方法， 或者原生事件中setState 重新一种同步表现，不会setState 进行合并。 （批处理机制）**}**
 
@@ -339,15 +339,15 @@ render() {
 
 ##### 行间事件
 
-​ React 事件
+React 事件
 
-​ 事件的this 指向 的是undefined
+事件的this 指向 的是undefined
 
-​ 如果要指向函数的问题 ：
+如果要指向函数的问题 ：
 
 两种方案：1. =>函数
 
-​ 2.this 绑定
+2.this 绑定
 
 例子如下 通过函数绑定要构造函数中
 
@@ -386,7 +386,7 @@ render() {
 
 ##### 父级通信向子级通信
 
-​ 通父级元素的属性向子节点传值 -通过 子级pros 并解构
+通父级元素的属性向子节点传值 -通过 子级pros 并解构
 
 ```react
 //子组件    
@@ -421,13 +421,13 @@ class App extends Component {
 
 ##### 子级的向父级的数据通信
 
-​ 在父级中定义相关的数据操作方法 （回调），把方法传递给子级，在子级调该方法父级传递消息。
+在父级中定义相关的数据操作方法 （回调），把方法传递给子级，在子级调该方法父级传递消息。
 
 （只允许从上到下传递）
 
-​ 实际上通过的属性将父级的props传给子组件，通过解构将方法拿出，由子组件通过事件触发绑定方法从而修改组件状态。
+实际上通过的属性将父级的props传给子组件，通过解构将方法拿出，由子组件通过事件触发绑定方法从而修改组件状态。
 
-​ Todo：funtion 丢失props 未解决，从而用的=>替代
+Todo：funtion 丢失props 未解决，从而用的=>替代
 
 父级:
 
@@ -490,3 +490,12 @@ class Menu extends Component {
 }
 ```
 
+------
+
+#### Context Api-跨组件通信
+
+创建:context ：createContext
+
+向下传递数据 ：Provider
+
+接受context 数据
