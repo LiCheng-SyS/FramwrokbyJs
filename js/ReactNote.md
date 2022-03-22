@@ -499,3 +499,25 @@ class Menu extends Component {
 向下传递数据 ：Provider
 
 接受context 数据
+
+## 类的生命周期
+
+挂载阶段 （Mount）
+
+组件从初始化到将组件的视图到真正的dom树中
+
+--constructor
+
+```react
+constructor(props) {
+    super(props);
+    console.log("初始化成功");
+}
+```
+
+组件加载执行
+
+更新阶段 （Update）
+
+卸载阶段 （UnMont）
+

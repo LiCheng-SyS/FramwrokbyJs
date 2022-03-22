@@ -2,6 +2,7 @@ import {Component} from "react";
 import "./index.css";
 import Child from "./Component/Child";
 import {Provider} from "./context/Context";
+import Childfun from "./Component/Childfun";
 
 /*
   跨曾
@@ -9,30 +10,27 @@ import {Provider} from "./context/Context";
 
 class App extends Component {
     state = {
-        number: 10, count: 1
+        nub: 1
     }
-    addCount = () => {
-        this.setState({
-            count: this.state.count + 1
-        })
+
+    constructor(props) {
+        super(props);
+        console.log("初始化成功");
     }
-    addNumber = () => {
+
+    addNub = () => {
         this.setState({
-            number: this.state.number + 5
+            nub: this.state.nub + 5
         })
     }
 
     /*value 属性的值*/
     render() {
+        const {nub} = this.state;
+        console.log(this.state)
         return (
             <>
-                <Provider value={{
-                    ...this.state,
-                    addCount: this.addCount,
-                    addNumber: this.addNumber
-                }}>
-                    <Child></Child>
-                </Provider>
+                <Childfun nub={nub} addNUB={this.addNub}></Childfun>
             </>
         )
     }
