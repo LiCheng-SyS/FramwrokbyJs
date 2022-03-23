@@ -517,6 +517,33 @@ constructor(props) {
 
 组件加载执行
 
+--getDerivedStateFromProps 将props映射到state中
+
+```react
+  static getDerivedStateFromProps(props, state) {
+        console.log("next2 将props映射到state中")
+        console.log(props, state);
+        return props;
+    }
+```
+
+--render
+
+```react
+ render() {
+    console.log('生产VirDOM');
+}
+```
+
+--componentDidMount
+
+```react
+    componentDidMount() {
+        console.log("4 挂载完成，已经加载完成虚拟DOM ，并且添加到DOM了中");
+        /*一般进行Dom操作和数据请求*/
+    }
+```
+
 更新阶段 （Update）
 
 卸载阶段 （UnMont）
