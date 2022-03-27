@@ -548,3 +548,94 @@ constructor(props) {
 
 卸载阶段 （UnMont）
 
+## 第三章：必用功能
+
+### 受控组件
+
+​ 名词解释：如果想要获取表单内的状态,可以将from的内部状态和组件状态进行绑定，形成受控组件
+
+​ 如果比较Vue的功能双向绑定v-model
+
+​ 如checked 或则 value --输入类型的表单
+
+```react
+class App extends Component {
+    state = {
+        val: ""
+    }
+    /*双向绑定 受控组件 -->*/
+    render() {
+        const {val} = this.state;
+        return (
+            <>
+                <input type={"text"} value={val}/>
+                <button> 获取text value</button>
+            </>
+        )
+    }
+}
+
+/*You provided a `value` prop to a form field without an `onChange` handler.*/
+```
+
+​ 与Vue不同的是，vue通过语法糖帮你做了处理，而react更加的贴近于原生js 需要事件的回调进行处理
+
+#### text
+
+```react
+            <>
+                <input type={"text"}
+                       value={val}
+                       onChange={({target}) => {
+                           this.setState({
+                               val: target.value
+                           })
+                       }}
+                />
+                <button> 获取text value</button>
+                <p>{val}</p>
+            </>
+```
+
+​ 当前的 onchnge 是react 重写过处理，通过从event解构出target后 在函数回调中 将state的vaule和状态和 表单控件的vaule进行绑定，==即就是手动实现了一个双数据的绑定。
+
+#### checkbox
+
+```react
+
+                <input type={"checkbox"}
+                       checked={checked}
+                       onChange={({target}) => {
+                           this.setState({
+                               checked: target.checked
+                           })
+                       }}
+                />
+                <button onClick={() => {
+                    this.setState({
+                        checked: !checked
+                    })
+                }}>{checked ? "选中" : "不选中"}</button>=
+```
+
+同样两个check的受控组件也同样都是通过函数回调实现。
+
+### 非受控组件
+
+如果有时只是给个初始值，如果设置vaule 或者checked ，react就会认为你想做受控组件。
+
+```html
+ <input type={"text"} value={"我是初始化值"}/>
+/*You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field.
+if the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+at input*/
+
+```
+
+同样也报错需要写回调函数，变成了只读状态
+
+如上 从抛出的异常info得知 react提供了两个 属性 defaultValue 和 defaultChecked。
+
+SCU
+
+PureComponent

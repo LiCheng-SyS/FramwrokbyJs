@@ -1,39 +1,32 @@
 import {Component} from "react";
-import "./index.css";
-import Child from "./Component/Child";
-import {Provider} from "./context/Context";
-import Childfun from "./Component/Childfun";
-
-/*
-  跨曾
-*/
+import "./index.css"
+import Todos from "./Component/Todos";
+import Stats from "./Component/Stats"
 
 class App extends Component {
-    state = {
-        nub: 1
-    }
 
-    constructor(props) {
-        super(props);
-        console.log("初始化成功");
-    }
 
-    addNub = () => {
-        this.setState({
-            nub: this.state.nub + 5
-        })
-    }
-
-    /*value 属性的值*/
+    /*双向绑定 受控组件 input 的受控组件-->*/
     render() {
-        const {nub} = this.state;
-        console.log(this.state)
         return (
             <>
-                <Childfun nub={nub} addNUB={this.addNub}></Childfun>
+                <div id="todoapp">
+                    <div className="title">
+                        <h1>todo</h1>
+                    </div>
+
+                    <div id="create-todo"><input id="new-todo" placeholder="What needs to be done?"
+                                                 autoComplete="off" type="text"/>
+                    </div>
+                    <Todos></Todos>
+                    <Stats></Stats>
+
+                </div>
+
             </>
         )
     }
+
 }
 
 
