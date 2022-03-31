@@ -1,29 +1,28 @@
 import {Component} from "react";
 import "./index.css"
-import Todos from "./Component/Todos";
-import Stats from "./Component/Stats"
+import Child from "./Component/child";
+import Count from "./Component/count";
+// import Count from "./Component/Count";
 
+//插槽 solt
 class App extends Component {
-
+    /*是否做完*/
+    state = {}
 
     /*双向绑定 受控组件 input 的受控组件-->*/
     render() {
+        const {todo} = this.state;
         return (
-            <>
-                <div id="todoapp">
-                    <div className="title">
-                        <h1>todo</h1>
-                    </div>
-
-                    <div id="create-todo"><input id="new-todo" placeholder="What needs to be done?"
-                                                 autoComplete="off" type="text"/>
-                    </div>
-                    <Todos></Todos>
-                    <Stats></Stats>
-
-                </div>
-
-            </>
+            <div>
+                <Child>
+                    <p>this children</p>
+                    <Count></Count>
+                    {() => {
+                        console.log('this children');
+                        return <div>this children</div>
+                    }}
+                </Child>
+            </div>
         )
     }
 
