@@ -1,32 +1,17 @@
 import {Component} from "react";
 import "./index.css"
-import Child from "./Component/child";
-import Count from "./Component/count";
-// import Count from "./Component/Count";
+import Menu from "./Component/Menu";
+import data from "./data";
 
-//插槽 solt
+
 class App extends Component {
-    /*是否做完*/
-    state = {}
-
-    /*双向绑定 受控组件 input 的受控组件-->*/
     render() {
-        const {todo} = this.state;
-        return (
-            <div>
-                <Child>
-                    <p>this children</p>
-                    <Count></Count>
-                    {() => {
-                        console.log('this children');
-                        return <div>this children</div>
-                    }}
-                </Child>
-            </div>
-        )
+        // Each child in a list should have a unique "key" prop.没K报错
+        return <div className="friend-list">
+            {data.map((value, index) => {
+                return <Menu key={index} data={value}></Menu>
+            })}
+        </div>
     }
-
 }
-
-
 export default App;

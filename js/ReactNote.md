@@ -552,11 +552,11 @@ constructor(props) {
 
 ### 受控组件
 
-​ 名词解释：如果想要获取表单内的状态,可以将from的内部状态和组件状态进行绑定，形成受控组件
+ 名词解释：如果想要获取表单内的状态,可以将from的内部状态和组件状态进行绑定，形成受控组件
 
-​ 如果比较Vue的功能双向绑定v-model
+如果比较Vue的功能双向绑定v-model
 
-​ 如checked 或则 value --输入类型的表单
+如checked 或则 value --输入类型的表单
 
 ```react
 class App extends Component {
@@ -578,7 +578,7 @@ class App extends Component {
 /*You provided a `value` prop to a form field without an `onChange` handler.*/
 ```
 
-​ 与Vue不同的是，vue通过语法糖帮你做了处理，而react更加的贴近于原生js 需要事件的回调进行处理
+与Vue不同的是，vue通过语法糖帮你做了处理，而react更加的贴近于原生js 需要事件的回调进行处理
 
 #### text
 
@@ -597,7 +597,7 @@ class App extends Component {
             </>
 ```
 
-​ 当前的 onchnge 是react 重写过处理，通过从event解构出target后 在函数回调中 将state的vaule和状态和 表单控件的vaule进行绑定，==即就是手动实现了一个双数据的绑定。
+当前的 onchnge 是react 重写过处理，通过从event解构出target后 在函数回调中 将state的vaule和状态和 表单控件的vaule进行绑定，==即就是手动实现了一个双数据的绑定。
 
 #### checkbox
 
@@ -639,3 +639,5 @@ at input*/
 SCU
 
 PureComponent
+
+练习总结
