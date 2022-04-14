@@ -1,5 +1,5 @@
-import {Component} from "react";
-import Child from "./Component/Child";
+// import {Component} from "react";
+// import Child from "./Component/Child";
 
 
 class App extends Component {

@@ -258,7 +258,7 @@ Example 复杂对象 行内事件
             </button>
 ```
 
-##### setState (satae|callback)
+##### setState (satae   |  callback)
 
 当前次组件更新完成后回调函数，当我们调用setState 后组件会更新 ，重新调用render,然后更dom，更新完成后执行的---callback.
 
@@ -641,3 +641,79 @@ SCU
 PureComponent
 
 练习总结
+
+
+
+
+
+
+
+## 第四章函数组件
+
+### 起步
+
+​    函数式组件,本质上为一个常规函数 接受一个参数props 在函数return中定义该组件输出的视图
+
+​    函数组件不存在 this ,也不存在生命周期函数.
+
+```react
+//父级
+ <Child info={"父级传递的数据"}></Child>
+
+//接受父级来的props
+function Child(props) {
+        return <li>fun Child {props.info}</li>
+}
+export  default  Child;
+```
+
+ 
+
+### 函数组件带来的问题
+
+   由于 函数式组件每次更新都会重新创建，所以应该尽量的在函数中声明子函数。
+
+复现如下：
+
+```react
+class App extends Component {
+    state = {
+        count: 1
+    }
+    AddCount = () => {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
+    render() {
+        return <>
+            <Child count={this.state.count} AddCount={this.AddCount} ></Child>
+        </>
+    }
+}
+```
+
+---->上面为父级 ,下面为字级
+
+```react
+//接受父级来的props
+function Child({AddCount,count}) {
+        console.log("render"); //挂载时会执行第一次
+        return <div>
+                <p>{count}</p>
+                <button onClick={AddCount}>增加</button>
+        </div>
+}
+export  default  Child;
+```
+
+**当函数组件每次执行事件通过回调函数将状态更新一次,更新都会重新渲染函数组件**
+
+
+
+### Hooks  钩子
+
+ 前文 :如果操作视图发生变化需要操作状态，但是状态只有类组件有。17版本 Hooks增加了Hooks
+
+​         函数式编程.
