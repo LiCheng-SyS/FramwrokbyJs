@@ -671,7 +671,7 @@ export  default  Child;
 
 ### 函数组件带来的问题
 
-   由于 函数式组件每次更新都会重新创建，所以应该尽量的在函数中声明子函数。
+  由于 函数式组件每次更新都会重新创建，所以应该尽量的在函数中声明子函数。
 
 复现如下：
 
@@ -714,6 +714,225 @@ export  default  Child;
 
 ### Hooks  钩子
 
- 前文 :如果操作视图发生变化需要操作状态，但是状态只有类组件有。17版本 Hooks增加了Hooks
+   前文 :如果操作视图发生变化需要操作状态，但是状态只有类组件有。17版本 Hooks增加了Hooks
 
-​         函数式编程.
+ **Hook 使你在无需修改组件结构的情况下复用状态逻辑。**
+
+​         **Hook 将组件中相互关联的部分拆分成更小的函数（比如设置订阅或请求数据）**，而并非强制按照生命周期划分。 -->函数式编程.
+
+​	---/*带use的都是Hooks*/
+
+#### useState
+
+​	**Started: **使用时,需要传入0的初始值,返回的第0个值是当前状态, 第一个值为setCount的方法， 这个初始 state 参数只有在第一次渲染时会被用到。
+
+```react
+   const [count, setCount] = useState(0); //参数为初始状态
+   return <div>
+        <p>{count}</p>
+        <button onClick={() => {
+            setCount(count + 1);
+            console.log("set");  //当前顺序为异步数据流  先set 在render
+        }
+        }>增加
+        </button>
+	</div>
+
+```
+
+##### usestate extend
+
+​        由于必然会传入一个初始值,React 实际会将传入值的会先存入一份,最终将值和方法返回出来,并在返回的方法重新渲染。
+
+```js
+  let state = null;   
+function useSate(init) {
+        console.log(state);
+        let nowState = state === null ? init : state;
+        return [nowState, (newState) => {
+            index++;
+            state = newState;
+            render();
+        }]
+    }
+
+ render();
+
+    function render() {
+        let root = document.querySelector("#root");
+        let p = document.createElement("p");
+        let btn = document.createElement("button");
+
+        let [count, setCount] = useSate(10);
+        p.innerHTML = "count" + count;
+        btn.innerHTML = "递增";
+        btn.onclick = () => {
+            setCount(count + 1);
+        }
+        root.innerHTML = "";
+        root.append(p);
+        root.append(btn);
+    }
+```
+
+多次调用如何保证顺序?  或则说 为什么要保持顺序调用
+
+ 由于传入的队列为引用类型,队列的形式传入为地址的引用 ，如果顺序出现异常，会发生不可预料的错误。
+
+
+
+
+
+#### Effect Hook
+
+​	 React 文档摘要 
+
+​		     useEffect  副作用钩子解析 	语法如下：
+
+```react
+    useEffect(()=>{
+        return ()=>{
+        }
+   	 },[]);
+```
+
+​      语法 effect 函数  返回值为函数 cleanup 函数 ,[依赖数据] , 用于在react  函数中处理**生命周期**. 
+
+​	  副作用解析：副作用 --> 数据请求,等 DOM 操作
+
+##### 依赖参数
+
+​    从上下一行行执行代码，如果读取到UseFffect 则将对应effect 函数, 会先执行render 函数,然后执行effect队列,但是cleanup并没有执行
+
+如果有 cleanup  更新时一定会是先执行cleanup 函数队列 在执行useFffect 类似于栈，
+
+卸载阶段,找到cleanup 队列，将cleanup队列依次执行
+
+##### 挂载阶段
+
+​    从上到下一行行执行代码，如果读取到UseFffect 则将对应effect 函数, 会先执行render 函数,然后执行effect队列,但是cleanup并没有执行
+
+```react
+    useEffect(()=>{
+        console.log("effect-1")
+        return ()=>{
+            console.log("cleanup-1"); 
+        }
+    },[])
+
+    useEffect(()=>{
+        console.log("effect-2")
+        return ()=>{
+            console.log("cleanup-2");
+        }
+    },[])
+    console.log("render");
+```
+
+##### 更新阶段 
+
+​    从上到下执行代码，如果碰到useEffect 则effect函数，存储到一个队列中，当组件更新完成后，找到clenup队列，一次执行， 然后 在去执行effect 队列
+
+​    在执行具体的effect 函数后，或则cleanup函数时，会观察，盖useEffect对应依赖数据，是否有产省变化，则执行， 否则不执行。
+
+##### 卸载阶段
+
+找到对应的 cleaup队列 ，依次执行
+
+
+
+##### 依赖参数 
+
+-->更新阶段
+
+ 1.如果没有当前参数，则监听组件->组件有更新，就会执行其cleanup 函数和 effect函数
+
+ 2.如果有参考具体的依赖参数， 只要你有[a.....]一个到多个,则组件更新时，其依赖参数有变化，会执行其cleanup 的函数 和effect 函数
+
+3.有具体依赖的参数（0个） useEffect(()=>,[]) ,则组件更新时，不会执行其 cleanup 和effect 
+
+
+
+#### 通用使用场景
+
+```react
+* 挂载完成后 ,做某事
+* 更新完成后 ,做某事
+* 更新完成和挂载完成后做某事
+* 即将卸载时做某事
+```
+
+##### 1: 挂载完成后 ,做某事
+
+​	可选参数为空->参数:不依赖于任何数据的更新,(更新阶段)不执行,该参数是不执行。<--挂载完成后 ,做某事
+
+```react
+    useEffect(() => {
+        return () => {
+            console.log("挂载的完成的时候做XX事");
+        }
+    }, []); 
+```
+
+##### 2:更新完成后 ,做某事
+
+  // 不给予依赖参数<--更新完成和挂载完成后做某事
+
+```react
+useEffect(() => {
+    console.log("更新和挂载后，做某事");
+}); 
+```
+
+##### 3.即将卸载时做某事
+
+​	和挂载时同理
+
+```react
+useEffect(() => {
+    console.log("挂载后做某事");
+}, []);
+```
+
+
+
+##### 5.更新完成后 ,做某事
+
+```react
+const  isMosnst=useRef(false);
+
+useEffect(()=>{
+        if(isMosnst.current){
+            console.log("挂载完成做某事");
+        }else
+        {
+            //不要想着 直接赋值
+            isMosnst.current=true;
+            console.log("挂载完成做某事")
+        }
+    })
+```
+
+
+
+######      UseRef  
+
+​		作用于关联节点实例，传递组件更新前的数据，获取函数组件更新的状态, 当前useRef 中存储某个数据时，该数据不会随组件更新而更新
+
+current :***需要用 current属性来获取最新的组件数据**
+
+ example ：**prevCont.current=count;// **
+
+```react
+ const contEl = useRef();
+   <p ref={contEl}>{count}</p> // ref 绑定给p 标签
+```
+
+ useEffect(() => {
+        // console.log(prevCont,count);//组件数据不会随着组件数据更新而更新
+        // prevCont.current=count;// 需要用 current属性来获取最新(更新后)的组件数据
+     			于useRef 不同的是,可以取到更新前的数据,
+     			  //更新前的数据 		最新的数据
+        console.log(prevCounterInner, contEl.current.innerHTML);
+        prevCounterInner.current = contEl.current.innerHTML;
+    })

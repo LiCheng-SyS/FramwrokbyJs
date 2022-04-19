@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Implementation</title>
+</head>
+<body>
+<div id="root">
+</div>
+
+<script>
+
+    //这也就为什么每次组件更新能拿到最新状态的原因 ,多次调用如何保证顺序?
+    //
+    let state = [];
+    let index = 0;
+
+    function useSate(init) {
+
+        let nowIndex = index++;
+        if (state[nowIndex] === undefined) {
+            state[nowIndex] = init;
+        }
+        return [state[nowIndex], (newState) => {
+            state = newState;
+            render();
+        }];
+    }
+
+    function render() {
+        index = 0;
+        let root = document.querySelector("#root");
+        let p = document.createElement("p");
+        let btn = document.createElement("button");
+        let p2 = document.createElement("p");
+        let btn2 = document.createElement("button");
+
+        let [count, setCount] = useSate(10);
+        p.innerHTML = "count" + count;
+        btn.innerHTML = "递增";
+        btn.onclick = () => {
+            setCount(count + 1);
+        };
+
+
+        let [count2, setCount2] = useSate(5);
+        p2.innerHTML = "count2" + count2;
+        btn2.innerHTML = "递增";
+        btn2.onclick = () => {
+            setCount2(count2 + 1);
+        }
+
+
+        root.innerHTML = "";
+        root.appendChild(p);
+        root.appendChild(btn);
+        root.appendChild(p2);
+        root.appendChild(btn2);
+    }
+
+
+    render();
+</script>
+</body>
+</html>

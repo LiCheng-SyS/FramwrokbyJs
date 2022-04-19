@@ -1,7 +1,5 @@
 import {Component} from "react";
-import Child from "./Component/Childbackup.js";
-import EffectRef from "./Component/EffectRef";
-import Childbackup from "./Component/Childbackup.js";
+import Child from "./Component/Child";
 
 
 class App extends Component {
@@ -16,12 +14,9 @@ class App extends Component {
 
     render() {
         return <>
-
-            <EffectRef count={this.state.count} AddCount={this.AddCount} ></EffectRef>
+            <Child count={this.state.count} AddCount={this.AddCount} ></Child>
         </>
     }
 }
 
 export default App;
-// <Childbackup></Childbackup>
-
