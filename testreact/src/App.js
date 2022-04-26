@@ -1,27 +1,11 @@
-import {Component} from "react";
-import Child from "./Component/Childbackup.js";
-import EffectRef from "./Component/EffectRef";
-import Childbackup from "./Component/Childbackup.js";
+import Count from "./count";
+import Nub from "./Nub";
 
 
-class App extends Component {
-    state = {
-        count: 1
-    }
-    AddCount = () => {
-        this.setState({
-            count: this.state.count + 1
-        })
-    }
-
-    render() {
-        return <>
-
-            <EffectRef count={this.state.count} AddCount={this.AddCount} ></EffectRef>
-        </>
-    }
-}
-
-export default App;
-// <Childbackup></Childbackup>
-
+export default () => {
+    return <div>
+        <Nub></Nub>
+        <Count></Count>
+        <h1>1</h1>
+    </div>
+};

@@ -928,6 +928,7 @@ current :***需要用 current属性来获取最新的组件数据**
    <p ref={contEl}>{count}</p> // ref 绑定给p 标签
 ```
 
+```react
  useEffect(() => {
         // console.log(prevCont,count);//组件数据不会随着组件数据更新而更新
         // prevCont.current=count;// 需要用 current属性来获取最新(更新后)的组件数据
@@ -936,3 +937,147 @@ current :***需要用 current属性来获取最新的组件数据**
         console.log(prevCounterInner, contEl.current.innerHTML);
         prevCounterInner.current = contEl.current.innerHTML;
     })
+```
+
+
+
+##### memo
+
+```
+//高级组件-->本质上的东西为一个高阶函数,接受参数参数,返回参数或者函数  --->高阶组件,接受一个组件返回一个新的组件
+//shouldComponentUpdate 用法类似于 scu scu 可以通过返回值,来决定组件是否更新
+//官方文档 摘要如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现
+//React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。<--- React.memo 仅检查 props 变更
+const MemoTodo = memo(Todo, (prevProps, nextProps) => {
+    let temp= prevProps.todo === nextProps.todo
+    console.log(temp);
+    return    temp;
+    //true -->组件没有更新   false 当前组件发生了更新 /
+});
+```
+
+
+
+###### useMemo
+
+```react
+const PlusCount = useMemo(() => {
+    //当前的方法是返还函数
+    return () => {
+        SetCount(count + 1);
+    }
+}, [count]);
+```
+
+当前把“创建”函数和依赖项数组作为参数传入 `useMemo`，
+
+它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。
+
+记住，传入 `useMemo` 的函数会在渲染期间执行。请不要在这个函数内部执行与渲染无关的操作，诸如**副作用**这类的操作属于 `useEffect` 的适用范畴，而不是 `useMemo`
+
+如果没有提供依赖项数组 **useMemo** 在每次渲染时都会计算新的值。
+
+
+
+#### 定义自定义hook
+
+逻辑分离 抽离状态
+
+
+
+
+
+
+
+## Redux
+
+起步 :
+
+```shell
+ npm install --save redux
+```
+
+### 摘要:要点
+
+​		应用中所有的 state 都以对象树的形式存储在单一的的store（闭包的问题,单一的数据可以解决）,惟一改变 state 的办法是触发 action ，一个描述发生什么的对象 , 为了描述 action 如何改变 state 树,你需要更新reducers
+
+```
+store ==状态仓库
+      -->getState 获取当前状态
+      --> dispatch  修改 发起一个action
+      ---- 修改state 通过dispatch 发起来action后.
+      在store中,会调用reduce函数，并且会将action 和state 传递给reduce函数,并且将state和action 传递给reduce ，reduce被Call后,返回新的state
+
+      reducer 函数
+      action =>object     该对象有type属性和payload属性
+        -type 属性对state 做出何种修改的描述
+```
+
+
+
+Code Example
+
+```react
+import { createStore } from 'redux'; 
+
+* 这是一个 reducer，形式为 (state, action) => state 的纯函数。
+const fn = (state = {count: 1}
+    , action) => {
+    switch (action.type) {
+        case "add":
+            return {
+                count: state.count + 1
+            }
+    }
+    return state;
+}
+
+let store = createStore(counter); //导入对象--创建仓库
+
+
+///type是固定名称
+// action 可以被序列化，用日记记录和储存下来，后期还可以以回放的方式执行
+store.dispatch({
+    type: "add"
+})
+//改变state 的唯一方法
+```
+
+你应该把要做的修改变成一个普通对象，这个对象被叫做 *action*，而不是直接修改 state。然后编写专门的函数来决定每个 action 如何改变应用的 state，这个函数被叫做 *reducer*。
+
+
+
+
+
+### subscribe
+
+ //subscribe -->监听器
+//参数 顾名思义 listener   监听   state 发生的状态
+
+```react
+const unsubscribe = store.subscribe(() => {
+    console.log(store.getState());
+});
+```
+
+
+
+
+
+Redex三大原则
+
+#### 单一数据源
+
+**整个应用的 [state]被储存在一棵**  **object tree 中，并且这个 object tree 只存在于唯一一个store中**
+
+​	这让同构应用开发变得非常容易。来自服务端的 state 可以在无需编写更多代码的情况下被序列化并注入到客户端中。由于是单一的 state tree ，调试也变得非常容易
+
+ state  是只读的，为的改变方法就是触发action ,action是一个描述已经发生事件的普通对象
+
+使用纯函数来执行修改    纯函数:
+
+1 ：相同输入永远返回相同的输出  
+
+2:纯函数内部，不能有任何副作用 
+
+3:该函数只依赖自身参数，而不依赖任何外部数据。

@@ -1,7 +1,14 @@
-import ReactDOM from 'react-dom';
+import ReactDom from "react-dom"
 import App from "./App";
+import {Provider} from "react-redux";
+import store from "./store";
 
-ReactDOM.render(
-    <App/>,
-    document.getElementById('root')
+//context API
+
+ReactDom.render(
+    <Provider store={store}>
+
+        <App></App>
+    </Provider>,
+    document.querySelector("#root")
 );
